@@ -69,7 +69,7 @@ export function Ceo() {
                 <span className="text-sm font-medium">{label}</span>
               </div>
             ))}
-          </div>
+        </Reveal>
         </div>
       </div>
     </section>
