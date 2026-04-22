@@ -6,5 +6,11 @@ export const WHATSAPP_DISPLAY = "(93) 99120-4489";
 export const WHATSAPP_DEFAULT_MESSAGE =
   "Olá! Vim pelo site da JEVA e gostaria de um diagnóstico para regularização do meu imóvel rural.";
 
+/**
+ * Builds the most reliable WhatsApp link.
+ * `wa.me` is the official short link and is not blocked by browser shields
+ * (unlike `api.whatsapp.com`). On mobile it opens the app; on desktop it
+ * falls back to WhatsApp Web.
+ */
 export const whatsappLink = (message: string = WHATSAPP_DEFAULT_MESSAGE) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
