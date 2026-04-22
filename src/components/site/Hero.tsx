@@ -15,6 +15,10 @@ export function Hero() {
         className="absolute inset-0 -z-20 h-full w-full object-cover scale-105 animate-fade-in-slow"
         width={1920}
         height={1080}
+        loading="eager"
+        decoding="async"
+        // @ts-expect-error fetchpriority is a valid HTML attribute
+        fetchpriority="high"
       />
       {/* Light vignette to ensure text readability without darkening too much */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-foreground/30 via-foreground/10 to-foreground/60" />
