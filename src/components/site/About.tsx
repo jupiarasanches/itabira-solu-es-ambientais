@@ -30,6 +30,7 @@ export function About() {
             alt="Equipe JEVA analisando mapas no escritório"
             className="relative rounded-2xl shadow-elegant w-full object-cover aspect-[4/3]"
             loading="lazy"
+            decoding="async"
             width={1280}
             height={960}
           />
