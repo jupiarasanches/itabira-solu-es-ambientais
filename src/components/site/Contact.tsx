@@ -107,6 +107,51 @@ export function Contact() {
           </p>
         </form>
       </div>
+
+      {/* Mapa Google Maps — Sede Rurópolis-PA */}
+      <div className="container relative mt-16 lg:mt-20">
+        <div className="flex items-end justify-between mb-5 flex-wrap gap-3">
+          <div>
+            <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+              Nossa sede
+            </span>
+            <h3 className="mt-2 font-display text-2xl lg:text-3xl font-bold">
+              Rurópolis — Pará
+            </h3>
+          </div>
+          <a
+            href="https://www.google.com/maps/place/Rurópolis+-+PA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors"
+          >
+            <MapPin className="size-4" />
+            Como chegar
+          </a>
+        </div>
+
+        <div className="relative rounded-2xl overflow-hidden border border-concrete shadow-elegant group">
+          {/* Overlay sutil para integrar ao tema escuro */}
+          <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-accent/10 rounded-2xl z-10" />
+          <div className="absolute top-4 left-4 z-10 bg-concrete/90 backdrop-blur border border-concrete-border rounded-xl px-4 py-2.5 flex items-center gap-2 shadow-soft">
+            <span className="size-2 rounded-full bg-accent animate-pulse" />
+            <span className="text-sm font-semibold text-concrete-fg">
+              JEVA Engenharia Florestal
+            </span>
+          </div>
+          <iframe
+            title="Localização da JEVA Engenharia Florestal em Rurópolis-PA"
+            src="https://www.google.com/maps?q=Rur%C3%B3polis%2C+PA%2C+Brasil&hl=pt-BR&z=13&output=embed"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full h-[420px] border-0 grayscale-[20%] contrast-110 transition-all duration-500 group-hover:grayscale-0"
+            allowFullScreen
+          />
+        </div>
+        <p className="mt-3 text-xs text-concrete-fg/50 text-center">
+          [EDITAR] Atualize o endereço exato da sede quando disponível.
+        </p>
+      </div>
     </section>
   );
 }
