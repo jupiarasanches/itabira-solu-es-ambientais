@@ -71,23 +71,33 @@ function Avatar({ src, alt }: { src: string; alt: string }) {
 }
 
 export function Testimonials() {
-  const gridRef = useRef<HTMLDivElement | null>(null);
-  const [revealed, setRevealed] = useState(false);
+  const cardRefs = useRef<Array<HTMLElement | null>>([]);
+  const [visible, setVisible] = useState<boolean[]>(() =>
+    testimonials.map(() => false),
+  );
 
   useEffect(() => {
-    const node = gridRef.current;
-    if (!node) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setRevealed(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
+    const observers: IntersectionObserver[] = [];
+    cardRefs.current.forEach((node, idx) => {
+      if (!node) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setVisible((prev) => {
+              if (prev[idx]) return prev;
+              const next = [...prev];
+              next[idx] = true;
+              return next;
+            });
+            obs.disconnect();
+          }
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -10% 0px" },
+      );
+      obs.observe(node);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   return (
@@ -102,18 +112,22 @@ export function Testimonials() {
           </h2>
         </div>
 
-        <div ref={gridRef} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((t, i) => {
-            const revealClass = revealed
+            const revealClass = visible[i]
               ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-6";
+              : "opacity-0 translate-y-8";
             const baseTransition =
               "transition-all duration-700 ease-out will-change-transform";
             const delayStyle = { transitionDelay: `${i * 140}ms` };
+            const setRef = (el: HTMLElement | null) => {
+              cardRefs.current[i] = el;
+            };
 
             return t.variant === "image" ? (
               <article
                 key={t.name}
+                ref={setRef}
                 style={delayStyle}
                 className={`group relative overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant hover:-translate-y-1 ${baseTransition} ${revealClass}`}
               >
@@ -146,6 +160,7 @@ export function Testimonials() {
             ) : (
               <article
                 key={t.name}
+                ref={setRef}
                 style={delayStyle}
                 className={`group rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 flex flex-col ${baseTransition} ${revealClass}`}
               >
