@@ -160,6 +160,7 @@ export function Testimonials() {
             ) : (
               <article
                 key={t.name}
+                ref={setRef}
                 style={delayStyle}
                 className={`group rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 flex flex-col ${baseTransition} ${revealClass}`}
               >
