@@ -6,11 +6,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Reveal } from "@/components/Reveal";
 import { toast } from "sonner";
+import { WHATSAPP_DISPLAY, whatsappLink } from "@/lib/contact";
 
 const contactInfo = [
-  { icon: Phone, label: "Telefone", value: "[EDITAR] (93) 0000-0000" },
-  { icon: Mail, label: "E-mail", value: "[EDITAR] contato@jeva.com.br" },
-  { icon: MapPin, label: "Endereço", value: "[EDITAR] Rurópolis-PA, Brasil" },
+  {
+    icon: Phone,
+    label: "WhatsApp",
+    value: WHATSAPP_DISPLAY,
+    href: whatsappLink(),
+    external: true,
+  },
+  {
+    icon: Mail,
+    label: "E-mail",
+    value: "[EDITAR] contato@jeva.com.br",
+    href: "mailto:contato@jeva.com.br",
+  },
+  {
+    icon: MapPin,
+    label: "Endereço",
+    value: "[EDITAR] Rurópolis-PA, Brasil",
+  },
   { icon: Clock, label: "Horário", value: "Seg a Sex, 8h às 18h" },
 ];
 
