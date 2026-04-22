@@ -23,6 +23,7 @@ export function Ceo() {
               alt="Itabira Sanches, CEO da JEVA"
               className="h-full w-full object-cover"
               loading="lazy"
+              decoding="async"
               width={1024}
               height={1280}
             />
