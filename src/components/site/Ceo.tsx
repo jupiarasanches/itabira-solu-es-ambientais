@@ -1,4 +1,5 @@
 import { Award, BookOpen, Compass, TreePine } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
 import ceo from "@/assets/ceo-itabira.jpg";
 
 const expertise = [
@@ -15,7 +16,7 @@ export function Ceo() {
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-1/2 h-2/3 bg-gradient-to-r from-primary/15 to-transparent blur-3xl" />
 
       <div className="container relative grid lg:grid-cols-5 gap-12 items-center">
-        <div className="lg:col-span-2 relative">
+        <Reveal direction="right" className="lg:col-span-2 relative">
           <div className="absolute -inset-6 rounded-3xl gradient-accent opacity-30 blur-3xl" />
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-concrete shadow-elegant">
             <img
@@ -32,9 +33,9 @@ export function Ceo() {
               <div className="mt-1 font-display text-2xl font-bold">Itabira Sanches</div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="lg:col-span-3">
+        <Reveal direction="left" delay={120} className="lg:col-span-3">
           <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Liderança
           </span>
