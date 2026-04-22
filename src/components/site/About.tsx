@@ -28,7 +28,7 @@ export function About() {
           <div className="absolute -inset-4 rounded-3xl gradient-accent opacity-20 blur-2xl group-hover:opacity-40 transition-opacity" />
           <img
             src={office}
-            alt="Equipe JEVA analisando mapas no escritório"
+            alt="Equipe da JEVA Engenharia Florestal analisando mapas e processos de CAR e georreferenciamento no escritório em Rurópolis-PA"
             className="relative rounded-2xl shadow-elegant w-full object-cover aspect-[4/3]"
             loading="lazy"
             decoding="async"
