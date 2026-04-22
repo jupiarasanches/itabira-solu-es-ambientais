@@ -69,6 +69,9 @@ export function Services() {
                   src={s.image}
                   alt={s.title}
                   loading="lazy"
+                  decoding="async"
+                  width={800}
+                  height={1040}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                 />
 
