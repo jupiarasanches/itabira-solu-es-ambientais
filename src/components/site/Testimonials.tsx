@@ -1,5 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { Quote, Star } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/Reveal";
 import roberto from "@/assets/avatar-roberto.jpg";
 import mariana from "@/assets/avatar-mariana.jpg";
 import fazenda from "@/assets/avatar-fazenda.jpg";
@@ -44,25 +48,51 @@ const testimonials: Testimonial[] = [
     variant: "image",
     bg: farmBg,
   },
+  {
+    name: "João Pereira",
+    role: "Pecuarista · Trairão-PA",
+    avatar: roberto,
+    rating: 5,
+    quote:
+      "Conseguimos titular nossa área junto ao ITERPA com total transparência no processo. Atendimento próximo do começo ao fim — recomendo de olhos fechados.",
+    variant: "soft",
+  },
+  {
+    name: "Ana Lima",
+    role: "Agricultora familiar · Uruará-PA",
+    avatar: mariana,
+    rating: 5,
+    quote:
+      "O laudo técnico e os mapas entregues foram fundamentais para liberar o nosso financiamento agrícola. Equipe muito competente.",
+    variant: "soft",
+  },
 ];
 
-function Stars({ count }: { count: number }) {
+function Stars({ count, light = false }: { count: number; light?: boolean }) {
   return (
     <div className="flex gap-1">
       {Array.from({ length: count }).map((_, i) => (
-        <Star key={i} className="size-4 fill-primary text-primary" />
+        <Star
+          key={i}
+          className={
+            light
+              ? "size-4 fill-accent text-accent"
+              : "size-4 fill-primary text-primary"
+          }
+        />
       ))}
     </div>
   );
 }
 
-function Avatar({ src, alt }: { src: string; alt: string }) {
+function Avatar({ src, alt, eager }: { src: string; alt: string; eager?: boolean }) {
   return (
     <img
       src={src}
       alt={alt}
-      loading="lazy"
+      loading={eager ? "eager" : "lazy"}
       decoding="async"
+      fetchPriority={eager ? "high" : "auto"}
       width={96}
       height={96}
       className="size-12 rounded-full object-cover ring-2 ring-background shadow-soft"
@@ -71,119 +101,157 @@ function Avatar({ src, alt }: { src: string; alt: string }) {
 }
 
 export function Testimonials() {
-  const cardRefs = useRef<Array<HTMLElement | null>>([]);
-  const [visible, setVisible] = useState<boolean[]>(() =>
-    testimonials.map(() => false),
+  const autoplay = useRef(
+    Autoplay({ delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true }),
+  );
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "start", dragFree: false, containScroll: "trimSnaps" },
+    [autoplay.current],
+  );
+  const [selected, setSelected] = useState(0);
+  const [snaps, setSnaps] = useState<number[]>([]);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback(
+    (i: number) => emblaApi?.scrollTo(i),
+    [emblaApi],
   );
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    cardRefs.current.forEach((node, idx) => {
-      if (!node) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setVisible((prev) => {
-              if (prev[idx]) return prev;
-              const next = [...prev];
-              next[idx] = true;
-              return next;
-            });
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -10% 0px" },
-      );
-      obs.observe(node);
-      observers.push(obs);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
+    if (!emblaApi) return;
+    const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
+    setSnaps(emblaApi.scrollSnapList());
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    onSelect();
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi]);
 
   return (
     <section className="bg-background py-24 lg:py-32">
+      {/* Preload primary avatars to keep the carousel snappy */}
+      <link rel="preload" as="image" href={roberto} />
+      <link rel="preload" as="image" href={mariana} />
+      <link rel="preload" as="image" href={fazenda} />
+
       <div className="container">
-        <div className="max-w-2xl mb-12">
+        <Reveal className="max-w-2xl mb-12">
           <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Depoimentos
           </span>
           <h2 className="mt-3 font-display text-4xl lg:text-5xl font-bold text-foreground">
             Quem confia na <span className="text-primary">JEVA</span>
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t, i) => {
-            const revealClass = visible[i]
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8";
-            const baseTransition =
-              "transition-all duration-700 ease-out will-change-transform";
-            const delayStyle = { transitionDelay: `${i * 140}ms` };
-            const setRef = (el: HTMLElement | null) => {
-              cardRefs.current[i] = el;
-            };
+        <Reveal delay={120}>
+          <div className="flex justify-end gap-2 mb-6">
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={scrollPrev}
+              aria-label="Depoimento anterior"
+              className="rounded-full border-primary/30 hover:bg-primary hover:text-primary-foreground"
+            >
+              <ChevronLeft />
+            </Button>
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={scrollNext}
+              aria-label="Próximo depoimento"
+              className="rounded-full border-primary/30 hover:bg-primary hover:text-primary-foreground"
+            >
+              <ChevronRight />
+            </Button>
+          </div>
 
-            return t.variant === "image" ? (
-              <article
-                key={t.name}
-                ref={setRef}
-                style={delayStyle}
-                className={`group relative overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant hover:-translate-y-1 ${baseTransition} ${revealClass}`}
-              >
-                <img
-                  src={t.bg!}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  width={1280}
-                  height={896}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-concrete via-concrete/60 to-concrete/20" />
+          <div className="overflow-hidden -mx-4 px-4" ref={emblaRef}>
+            <div className="flex gap-6 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]">
+              {testimonials.map((t, i) => (
+                <div
+                  key={`${t.name}-${i}`}
+                  className="shrink-0 grow-0 basis-full sm:basis-[calc(50%-0.75rem)] lg:basis-[calc(33.333%-1rem)]"
+                >
+                  {t.variant === "image" ? (
+                    <article className="group relative h-full overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant transition-shadow">
+                      <img
+                        src={t.bg!}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        width={1280}
+                        height={896}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-concrete via-concrete/60 to-concrete/20" />
 
-                <div className="relative h-full flex flex-col justify-between p-7 text-concrete-fg">
-                  <Stars count={t.rating} />
-
-                  <div>
-                    <p className="text-base leading-relaxed">"{t.quote}"</p>
-                    <div className="mt-5 flex items-center gap-3">
-                      <Avatar src={t.avatar} alt={t.name} />
-                      <div>
-                        <div className="font-semibold">{t.name}</div>
-                        <div className="text-sm text-concrete-fg/75">{t.role}</div>
+                      <div className="relative h-full flex flex-col justify-between p-7 text-concrete-fg">
+                        <Stars count={t.rating} light />
+                        <div>
+                          <p className="text-base leading-relaxed">"{t.quote}"</p>
+                          <div className="mt-5 flex items-center gap-3">
+                            <Avatar src={t.avatar} alt={t.name} eager={i < 3} />
+                            <div>
+                              <div className="font-semibold">{t.name}</div>
+                              <div className="text-sm text-concrete-fg/75">
+                                {t.role}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ) : (
-              <article
-                key={t.name}
-                ref={setRef}
-                style={delayStyle}
-                className={`group rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 flex flex-col ${baseTransition} ${revealClass}`}
-              >
-                <div className="flex items-center gap-3">
-                  <Avatar src={t.avatar} alt={t.name} />
-                  <div>
-                    <div className="font-semibold text-foreground">{t.name}</div>
-                    <div className="text-sm text-muted-foreground">{t.role}</div>
-                  </div>
-                </div>
+                    </article>
+                  ) : (
+                    <article className="group h-full rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                      <div className="flex items-center gap-3">
+                        <Avatar src={t.avatar} alt={t.name} eager={i < 3} />
+                        <div>
+                          <div className="font-semibold text-foreground">
+                            {t.name}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {t.role}
+                          </div>
+                        </div>
+                      </div>
 
-                <div className="mt-5">
-                  <Stars count={t.rating} />
-                </div>
+                      <div className="mt-5">
+                        <Stars count={t.rating} />
+                      </div>
 
-                <Quote className="mt-5 size-7 text-primary/70 transition-transform duration-300 group-hover:scale-110" />
-                <p className="mt-3 text-foreground/85 leading-relaxed">
-                  {t.quote}
-                </p>
-              </article>
-            );
-          })}
-        </div>
+                      <Quote className="mt-5 size-7 text-primary/70 transition-transform duration-300 group-hover:scale-110" />
+                      <p className="mt-3 text-foreground/85 leading-relaxed">
+                        {t.quote}
+                      </p>
+                    </article>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {snaps.length > 1 && (
+            <div className="mt-8 flex justify-center gap-2">
+              {snaps.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => scrollTo(i)}
+                  aria-label={`Ir para o depoimento ${i + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    selected === i
+                      ? "w-8 bg-primary"
+                      : "w-2 bg-primary/25 hover:bg-primary/50"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+        </Reveal>
       </div>
     </section>
   );
