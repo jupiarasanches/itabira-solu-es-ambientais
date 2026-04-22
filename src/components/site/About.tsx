@@ -1,4 +1,5 @@
 import { Compass, Sprout, Target } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
 import office from "@/assets/about-office.jpg";
 
 const pillars = [
@@ -23,7 +24,7 @@ export function About() {
   return (
     <section id="sobre" className="bg-background py-24 lg:py-32">
       <div className="container grid lg:grid-cols-2 gap-14 items-center">
-        <div className="relative group">
+        <Reveal direction="right" className="relative group">
           <div className="absolute -inset-4 rounded-3xl gradient-accent opacity-20 blur-2xl group-hover:opacity-40 transition-opacity" />
           <img
             src={office}
@@ -38,9 +39,9 @@ export function About() {
             <div className="text-xs uppercase tracking-wider text-muted-foreground">Fundada em</div>
             <div className="font-display text-3xl font-bold text-primary">2017</div>
           </div>
-        </div>
+        </Reveal>
 
-        <div>
+        <Reveal direction="left" delay={120}>
           <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Sobre a JEVA
           </span>
@@ -57,20 +58,21 @@ export function About() {
           </p>
 
           <div className="mt-8 grid sm:grid-cols-3 gap-4">
-            {pillars.map(({ icon: Icon, title, text }) => (
-              <div
+            {pillars.map(({ icon: Icon, title, text }, i) => (
+              <Reveal
                 key={title}
-                className="rounded-xl border border-border bg-card p-5 hover:border-primary/40 hover:shadow-soft transition-all"
+                delay={200 + i * 120}
+                className="rounded-xl border border-border bg-card p-5 hover:border-primary/40 hover:shadow-soft hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="size-10 rounded-lg gradient-primary grid place-items-center">
                   <Icon className="size-5 text-primary-foreground" />
                 </div>
                 <h3 className="mt-3 font-display font-semibold text-foreground">{title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{text}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Reveal } from "@/components/Reveal";
 import { toast } from "sonner";
 
 const contactInfo = [
@@ -37,7 +38,7 @@ export function Contact() {
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/15 to-transparent blur-3xl" />
 
       <div className="container relative grid lg:grid-cols-5 gap-12">
-        <div className="lg:col-span-2">
+        <Reveal direction="right" className="lg:col-span-2">
           <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Fale com a JEVA
           </span>
@@ -64,7 +65,7 @@ export function Contact() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
 
         <form
           onSubmit={onSubmit}
