@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Quote, Star } from "lucide-react";
 import roberto from "@/assets/avatar-roberto.jpg";
 import mariana from "@/assets/avatar-mariana.jpg";
@@ -70,6 +71,25 @@ function Avatar({ src, alt }: { src: string; alt: string }) {
 }
 
 export function Testimonials() {
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const node = gridRef.current;
+    if (!node) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.15 },
+    );
+    obs.observe(node);
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <section className="bg-background py-24 lg:py-32">
       <div className="container">
@@ -82,12 +102,20 @@ export function Testimonials() {
           </h2>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) =>
-            t.variant === "image" ? (
+        <div ref={gridRef} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {testimonials.map((t, i) => {
+            const revealClass = revealed
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-6";
+            const baseTransition =
+              "transition-all duration-700 ease-out will-change-transform";
+            const delayStyle = { transitionDelay: `${i * 140}ms` };
+
+            return t.variant === "image" ? (
               <article
                 key={t.name}
-                className="relative overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant transition-shadow"
+                style={delayStyle}
+                className={`group relative overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant hover:-translate-y-1 ${baseTransition} ${revealClass}`}
               >
                 <img
                   src={t.bg!}
@@ -96,7 +124,7 @@ export function Testimonials() {
                   decoding="async"
                   width={1280}
                   height={896}
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-concrete via-concrete/60 to-concrete/20" />
 
@@ -118,7 +146,8 @@ export function Testimonials() {
             ) : (
               <article
                 key={t.name}
-                className="rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant transition-shadow flex flex-col"
+                style={delayStyle}
+                className={`group rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 flex flex-col ${baseTransition} ${revealClass}`}
               >
                 <div className="flex items-center gap-3">
                   <Avatar src={t.avatar} alt={t.name} />
@@ -132,13 +161,13 @@ export function Testimonials() {
                   <Stars count={t.rating} />
                 </div>
 
-                <Quote className="mt-5 size-7 text-primary/70" />
+                <Quote className="mt-5 size-7 text-primary/70 transition-transform duration-300 group-hover:scale-110" />
                 <p className="mt-3 text-foreground/85 leading-relaxed">
                   {t.quote}
                 </p>
               </article>
-            )
-          )}
+            );
+          })}
         </div>
       </div>
     </section>
