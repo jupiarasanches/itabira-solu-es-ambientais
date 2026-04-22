@@ -66,6 +66,9 @@ export function Gallery() {
                   src={s.src}
                   alt={s.title}
                   loading="lazy"
+                  decoding="async"
+                  width={800}
+                  height={1000}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-concrete via-concrete/40 to-transparent opacity-90" />
