@@ -71,23 +71,33 @@ function Avatar({ src, alt }: { src: string; alt: string }) {
 }
 
 export function Testimonials() {
-  const gridRef = useRef<HTMLDivElement | null>(null);
-  const [revealed, setRevealed] = useState(false);
+  const cardRefs = useRef<Array<HTMLElement | null>>([]);
+  const [visible, setVisible] = useState<boolean[]>(() =>
+    testimonials.map(() => false),
+  );
 
   useEffect(() => {
-    const node = gridRef.current;
-    if (!node) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setRevealed(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
+    const observers: IntersectionObserver[] = [];
+    cardRefs.current.forEach((node, idx) => {
+      if (!node) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setVisible((prev) => {
+              if (prev[idx]) return prev;
+              const next = [...prev];
+              next[idx] = true;
+              return next;
+            });
+            obs.disconnect();
+          }
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -10% 0px" },
+      );
+      obs.observe(node);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   return (
