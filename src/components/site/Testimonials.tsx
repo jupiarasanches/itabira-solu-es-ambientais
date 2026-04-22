@@ -112,18 +112,22 @@ export function Testimonials() {
           </h2>
         </div>
 
-        <div ref={gridRef} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((t, i) => {
-            const revealClass = revealed
+            const revealClass = visible[i]
               ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-6";
+              : "opacity-0 translate-y-8";
             const baseTransition =
               "transition-all duration-700 ease-out will-change-transform";
             const delayStyle = { transitionDelay: `${i * 140}ms` };
+            const setRef = (el: HTMLElement | null) => {
+              cardRefs.current[i] = el;
+            };
 
             return t.variant === "image" ? (
               <article
                 key={t.name}
+                ref={setRef}
                 style={delayStyle}
                 className={`group relative overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant hover:-translate-y-1 ${baseTransition} ${revealClass}`}
               >
