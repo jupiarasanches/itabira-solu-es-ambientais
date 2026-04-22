@@ -21,7 +21,7 @@ export function Ceo() {
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-concrete shadow-elegant">
             <img
               src={ceo}
-              alt="Itabira Sanches, CEO da JEVA"
+              alt="Itabira Sanches, engenheiro florestal e CEO da JEVA, especialista em regularização ambiental e fundiária no Pará"
               className="h-full w-full object-cover"
               loading="lazy"
               decoding="async"
