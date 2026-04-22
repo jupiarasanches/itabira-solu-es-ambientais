@@ -28,7 +28,7 @@ export function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-concrete/85 backdrop-blur-xl border-b border-concrete shadow-soft"
+          ? "bg-background/85 backdrop-blur-xl border-b border-border shadow-soft"
           : "bg-transparent"
       }`}
     >
@@ -46,7 +46,9 @@ export function Header() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-concrete-fg/80 hover:text-accent transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
+              className={`text-sm font-medium transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full hover:text-accent ${
+                scrolled ? "text-foreground/80" : "text-concrete-fg/85"
+              }`}
             >
               {l.label}
             </a>
