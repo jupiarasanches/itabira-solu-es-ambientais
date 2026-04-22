@@ -67,19 +67,37 @@ export function Contact() {
           </p>
 
           <div className="mt-10 space-y-4">
-            {contactInfo.map(({ icon: Icon, label, value }) => (
-              <div key={label} className="flex items-start gap-4">
-                <div className="size-11 rounded-xl gradient-primary grid place-items-center shrink-0 shadow-glow">
-                  <Icon className="size-5 text-primary-foreground" />
-                </div>
-                <div>
-                  <div className="text-xs uppercase tracking-wider text-concrete-fg/50 font-semibold">
-                    {label}
+            {contactInfo.map(({ icon: Icon, label, value, href, external }) => {
+              const content = (
+                <>
+                  <div className="size-11 rounded-xl gradient-primary grid place-items-center shrink-0 shadow-glow">
+                    <Icon className="size-5 text-primary-foreground" />
                   </div>
-                  <div className="text-base font-medium">{value}</div>
+                  <div>
+                    <div className="text-xs uppercase tracking-wider text-concrete-fg/50 font-semibold">
+                      {label}
+                    </div>
+                    <div className="text-base font-medium">{value}</div>
+                  </div>
+                </>
+              );
+
+              return href ? (
+                <a
+                  key={label}
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noopener noreferrer" : undefined}
+                  className="flex items-start gap-4 group hover:text-accent transition-colors"
+                >
+                  {content}
+                </a>
+              ) : (
+                <div key={label} className="flex items-start gap-4">
+                  {content}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </Reveal>
 
