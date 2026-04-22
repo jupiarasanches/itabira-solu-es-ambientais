@@ -1,4 +1,5 @@
 import { FileCheck, Leaf, Map, Sprout, ArrowRight } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
 import georef from "@/assets/service-georef.jpg";
 import titulacao from "@/assets/service-titulacao.jpg";
 import licenciamento from "@/assets/service-licenciamento.jpg";
@@ -39,27 +40,31 @@ export function Services() {
       <div className="container">
         {/* Header */}
         <div className="grid lg:grid-cols-2 gap-10 items-end mb-14">
-          <div>
+          <Reveal>
             <h2 className="font-display text-4xl lg:text-6xl font-bold text-foreground leading-[1.05]">
               Soluções Completas em{" "}
               <span className="text-primary">Regularização</span>
             </h2>
-          </div>
-          <p className="text-muted-foreground text-lg leading-relaxed lg:pb-2">
-            Cada serviço é conduzido por especialistas certificados, com
-            metodologias ágeis e total transparência em cada etapa do processo.
-          </p>
+          </Reveal>
+          <Reveal delay={120}>
+            <p className="text-muted-foreground text-lg leading-relaxed lg:pb-2">
+              Cada serviço é conduzido por especialistas certificados, com
+              metodologias ágeis e total transparência em cada etapa do processo.
+            </p>
+          </Reveal>
         </div>
 
         {/* Cards grid: featured (2 cols) + 3 cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-          {services.map((s) => {
+          {services.map((s, idx) => {
             const Icon = s.icon;
             const isFeatured = s.featured;
 
             return (
-              <article
+              <Reveal
                 key={s.title}
+                delay={idx * 110}
+                as="article"
                 className={`group relative overflow-hidden rounded-3xl bg-card shadow-soft hover:shadow-elegant transition-all duration-500 min-h-[520px] ${
                   isFeatured ? "sm:col-span-2 lg:col-span-2" : ""
                 }`}
@@ -123,7 +128,7 @@ export function Services() {
                     </>
                   )}
                 </div>
-              </article>
+              </Reveal>
             );
           })}
         </div>

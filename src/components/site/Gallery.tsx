@@ -3,6 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/Reveal";
 import drone from "@/assets/gallery-drone.jpg";
 import team from "@/assets/gallery-team.jpg";
 import tablet from "@/assets/gallery-tablet.jpg";
@@ -27,14 +28,14 @@ export function Gallery() {
     <section className="bg-secondary/40 py-24 lg:py-32">
       <div className="container">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
-          <div className="max-w-xl">
+          <Reveal className="max-w-xl">
             <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent">
               Galeria
             </span>
             <h2 className="mt-3 font-display text-4xl lg:text-5xl font-bold text-foreground">
               Trabalhos em <span className="text-primary">campo</span>
             </h2>
-          </div>
+          </Reveal>
           <div className="flex gap-2">
             <Button
               size="icon"
