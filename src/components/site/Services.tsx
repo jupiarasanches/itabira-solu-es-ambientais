@@ -1,18 +1,10 @@
-import { Compass, FileCheck, Leaf, Map, Sprout, ArrowRight } from "lucide-react";
+import { Compass, FileCheck, Leaf, Map } from "lucide-react";
 import georef from "@/assets/service-georef.jpg";
 import titulacao from "@/assets/service-titulacao.jpg";
 import licenciamento from "@/assets/service-licenciamento.jpg";
 import geo from "@/assets/service-geo.jpg";
 
 const services = [
-  {
-    icon: Sprout,
-    eyebrow: "Cadastro Ambiental Rural",
-    title: "CAR e SICAR",
-    desc: "Realizamos o cadastro e manutenção do CAR junto ao SICAR, incluindo delimitação de Áreas de Preservação Permanente (APPs), Reserva Legal e uso consolidado, garantindo conformidade com o Código Florestal.",
-    image: georef,
-    featured: true,
-  },
   {
     icon: Leaf,
     eyebrow: "LP, LI e LO",
@@ -58,19 +50,14 @@ export function Services() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-          {services.map((s, i) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {services.map((s) => {
             const Icon = s.icon;
-            const isFeatured = s.featured;
 
             return (
               <article
                 key={s.title}
-                className={`group relative overflow-hidden rounded-3xl bg-card shadow-soft hover:shadow-elegant transition-all duration-500 ${
-                  isFeatured
-                    ? "sm:col-span-2 lg:col-span-2 lg:row-span-1 min-h-[520px]"
-                    : "min-h-[520px]"
-                }`}
+                className="group relative overflow-hidden rounded-3xl bg-card shadow-soft hover:shadow-elegant transition-all duration-500 min-h-[520px]"
               >
                 {/* Background image */}
                 <img
@@ -81,13 +68,7 @@ export function Services() {
                 />
 
                 {/* Gradient overlay */}
-                <div
-                  className={`absolute inset-0 ${
-                    isFeatured
-                      ? "bg-gradient-to-t from-background via-background/85 to-background/10"
-                      : "bg-gradient-to-t from-foreground/95 via-foreground/50 to-foreground/10"
-                  }`}
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/95 via-foreground/55 to-foreground/10" />
 
                 {/* Floating icon chip */}
                 <div className="absolute top-6 left-6 z-10">
@@ -97,36 +78,13 @@ export function Services() {
                 </div>
 
                 {/* Bottom content */}
-                <div className="absolute inset-x-0 bottom-0 p-6 lg:p-7 z-10">
-                  <div
-                    className={`text-[11px] font-semibold uppercase tracking-[0.18em] mb-2 ${
-                      isFeatured ? "text-primary" : "text-primary-foreground/85"
-                    }`}
-                  >
+                <div className="absolute inset-x-0 bottom-0 p-6 z-10">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] mb-2 text-primary-foreground/85">
                     {s.eyebrow}
                   </div>
-                  <h3
-                    className={`font-display text-2xl lg:text-3xl font-bold leading-tight ${
-                      isFeatured ? "text-foreground" : "text-primary-foreground"
-                    }`}
-                  >
+                  <h3 className="font-display text-xl xl:text-2xl font-bold leading-tight text-primary-foreground break-words">
                     {s.title}
                   </h3>
-
-                  {isFeatured && s.desc && (
-                    <>
-                      <p className="mt-4 text-muted-foreground text-sm leading-relaxed max-w-md">
-                        {s.desc}
-                      </p>
-                      <a
-                        href="#contato"
-                        className="mt-5 inline-flex items-center gap-2 text-primary font-semibold text-sm group/link"
-                      >
-                        Saiba mais
-                        <ArrowRight className="size-4 transition-transform group-hover/link:translate-x-1" />
-                      </a>
-                    </>
-                  )}
                 </div>
               </article>
             );
