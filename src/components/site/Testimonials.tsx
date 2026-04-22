@@ -1,39 +1,75 @@
-import { useRef } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import { Quote } from "lucide-react";
+import { Quote, Star } from "lucide-react";
+import roberto from "@/assets/avatar-roberto.jpg";
+import mariana from "@/assets/avatar-mariana.jpg";
+import fazenda from "@/assets/avatar-fazenda.jpg";
+import farmBg from "@/assets/testimonial-farm.jpg";
 
-const testimonials = [
+type Testimonial = {
+  name: string;
+  role: string;
+  avatar: string;
+  rating: number;
+  quote: string;
+  variant?: "soft" | "image";
+  bg?: string;
+};
+
+const testimonials: Testimonial[] = [
   {
+    name: "Roberto Carvalho",
+    role: "Produtor Rural · PA",
+    avatar: roberto,
+    rating: 5,
     quote:
-      "A JEVA cuidou de todo o CAR e georreferenciamento da nossa fazenda. Atendimento técnico, ágil e sem dor de cabeça.",
-    author: "[Cliente Placeholder]",
-    role: "Produtor rural — Rurópolis-PA",
+      "Tentei resolver meu CAR por 2 anos sem sucesso. A JEVA resolveu em menos de 60 dias. Profissionalismo e agilidade que nunca vi antes. Recomendo sem hesitar.",
+    variant: "soft",
   },
   {
+    name: "Mariana Souza",
+    role: "Advogada · Imóveis Rurais · PA",
+    avatar: mariana,
+    rating: 5,
     quote:
-      "Conseguimos titular nossa área junto ao ITERPA com total transparência no processo. Recomendo de olhos fechados.",
-    author: "[Cliente Placeholder]",
-    role: "Pecuarista — Trairão-PA",
+      "Parceria essencial para meus clientes no Pará. A equipe técnica da JEVA domina todos os processos de regularização fundiária e ambiental na Amazônia. Entregas sempre no prazo e documentação impecável.",
+    variant: "soft",
   },
   {
+    name: "Fazenda Nova Aurora",
+    role: "Agronegócio · Pará",
+    avatar: fazenda,
+    rating: 5,
     quote:
-      "O laudo técnico e os mapas entregues foram fundamentais para liberar o nosso financiamento agrícola.",
-    author: "[Cliente Placeholder]",
-    role: "Agricultor familiar — Uruará-PA",
-  },
-  {
-    quote:
-      "Profissionais sérios, com domínio total da legislação ambiental do Pará. Mudou nossa relação com a SEMAS.",
-    author: "[Cliente Placeholder]",
-    role: "Empresa do agro — Santarém-PA",
+      "Precisávamos do licenciamento ambiental com urgência para iniciar as obras. O time da JEVA foi incrivelmente eficiente e entregou dentro do prazo prometido.",
+    variant: "image",
+    bg: farmBg,
   },
 ];
 
-export function Testimonials() {
-  const autoplay = useRef(Autoplay({ delay: 5500, stopOnInteraction: false }));
-  const [emblaRef] = useEmblaCarousel({ loop: true, align: "start" }, [autoplay.current]);
+function Stars({ count }: { count: number }) {
+  return (
+    <div className="flex gap-1">
+      {Array.from({ length: count }).map((_, i) => (
+        <Star key={i} className="size-4 fill-primary text-primary" />
+      ))}
+    </div>
+  );
+}
 
+function Avatar({ src, alt }: { src: string; alt: string }) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      width={96}
+      height={96}
+      className="size-12 rounded-full object-cover ring-2 ring-background shadow-soft"
+    />
+  );
+}
+
+export function Testimonials() {
   return (
     <section className="bg-background py-24 lg:py-32">
       <div className="container">
@@ -46,22 +82,63 @@ export function Testimonials() {
           </h2>
         </div>
 
-        <div className="overflow-hidden -mx-6 px-6" ref={emblaRef}>
-          <div className="flex gap-6">
-            {testimonials.map((t, i) => (
-              <div
-                key={i}
-                className="shrink-0 basis-[90%] md:basis-[60%] lg:basis-[42%] rounded-2xl border border-border bg-card p-8 shadow-soft hover:shadow-elegant transition-shadow"
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {testimonials.map((t) =>
+            t.variant === "image" ? (
+              <article
+                key={t.name}
+                className="relative overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant transition-shadow"
               >
-                <Quote className="size-8 text-accent" />
-                <p className="mt-4 text-lg text-foreground leading-relaxed">"{t.quote}"</p>
-                <div className="mt-6 pt-6 border-t border-border">
-                  <div className="font-semibold text-foreground">{t.author}</div>
-                  <div className="text-sm text-muted-foreground">{t.role}</div>
+                <img
+                  src={t.bg!}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  width={1280}
+                  height={896}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-concrete via-concrete/60 to-concrete/20" />
+
+                <div className="relative h-full flex flex-col justify-between p-7 text-concrete-fg">
+                  <Stars count={t.rating} />
+
+                  <div>
+                    <p className="text-base leading-relaxed">"{t.quote}"</p>
+                    <div className="mt-5 flex items-center gap-3">
+                      <Avatar src={t.avatar} alt={t.name} />
+                      <div>
+                        <div className="font-semibold">{t.name}</div>
+                        <div className="text-sm text-concrete-fg/75">{t.role}</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              </article>
+            ) : (
+              <article
+                key={t.name}
+                className="rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant transition-shadow flex flex-col"
+              >
+                <div className="flex items-center gap-3">
+                  <Avatar src={t.avatar} alt={t.name} />
+                  <div>
+                    <div className="font-semibold text-foreground">{t.name}</div>
+                    <div className="text-sm text-muted-foreground">{t.role}</div>
+                  </div>
+                </div>
+
+                <div className="mt-5">
+                  <Stars count={t.rating} />
+                </div>
+
+                <Quote className="mt-5 size-7 text-primary/70" />
+                <p className="mt-3 text-foreground/85 leading-relaxed">
+                  {t.quote}
+                </p>
+              </article>
+            )
+          )}
         </div>
       </div>
     </section>
