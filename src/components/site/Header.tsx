@@ -16,6 +16,7 @@ const links = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string>("#inicio");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -24,12 +25,40 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const ids = links.map((l) => l.href.slice(1));
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) {
+          setActive(`#${visible.target.id}`);
+        }
+      },
+      {
+        rootMargin: "-40% 0px -50% 0px",
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      style={{ transitionTimingFunction: "var(--transition-smooth)" }}
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,box-shadow,border-color,transform] duration-700 ease-out will-change-[background-color,backdrop-filter] ${
         scrolled
-          ? "bg-background/85 backdrop-blur-xl border-b border-border shadow-soft"
-          : "bg-transparent"
+          ? "bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-soft"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
       <div className="container flex h-20 items-center justify-between">
@@ -38,21 +67,35 @@ export function Header() {
             src={logo}
             alt="JEVA Engenharia Florestal"
             className="h-12 w-auto transition-transform duration-500 group-hover:scale-105"
+            style={{ transitionTimingFunction: "var(--transition-smooth)" }}
           />
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className={`text-sm font-medium transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full hover:text-accent ${
-                scrolled ? "text-foreground/80" : "text-concrete-fg/85"
-              }`}
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) => {
+            const isActive = active === l.href;
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                aria-current={isActive ? "page" : undefined}
+                style={{ transitionTimingFunction: "var(--transition-smooth)" }}
+                className={`text-sm font-medium transition-all duration-500 relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:bg-accent after:transition-all after:duration-500 hover:after:w-full ${
+                  isActive ? "after:w-full" : "after:w-0"
+                } ${
+                  isActive
+                    ? scrolled
+                      ? "text-accent"
+                      : "text-accent"
+                    : scrolled
+                    ? "text-foreground/80 hover:text-accent"
+                    : "text-concrete-fg/85 hover:text-accent"
+                }`}
+              >
+                {l.label}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -75,16 +118,28 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-concrete border-concrete">
               <div className="flex flex-col gap-6 mt-10">
-                {links.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="text-lg font-display font-semibold text-concrete-fg hover:text-accent transition-colors"
-                  >
-                    {l.label}
-                  </a>
-                ))}
+                {links.map((l) => {
+                  const isActive = active === l.href;
+                  return (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`text-lg font-display font-semibold transition-colors duration-500 flex items-center gap-3 ${
+                        isActive ? "text-accent" : "text-concrete-fg hover:text-accent"
+                      }`}
+                      style={{ transitionTimingFunction: "var(--transition-smooth)" }}
+                    >
+                      <span
+                        className={`h-2 w-2 rounded-full transition-all duration-500 ${
+                          isActive ? "bg-accent scale-100" : "bg-concrete-muted scale-75"
+                        }`}
+                      />
+                      {l.label}
+                    </a>
+                  );
+                })}
                 <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 mt-4">
                   <a href="#contato" onClick={() => setOpen(false)}>
                     Fale conosco
