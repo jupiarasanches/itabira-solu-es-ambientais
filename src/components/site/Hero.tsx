@@ -11,7 +11,7 @@ export function Hero() {
       {/* Background image — full bleed, no heavy overlay */}
       <img
         src={hero}
-        alt="Floresta amazônica vista do alto"
+        alt="Floresta amazônica vista do alto — área de atuação da JEVA em regularização ambiental e fundiária no Pará"
         className="absolute inset-0 -z-20 h-full w-full object-cover scale-105 animate-fade-in-slow"
         width={1920}
         height={1080}
@@ -32,13 +32,14 @@ export function Hero() {
 
         {/* Big centered headline */}
         <h1 className="mx-auto mt-6 max-w-5xl font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] animate-fade-in [animation-delay:120ms]">
-          Regularização <span className="text-gradient">ambiental e fundiária</span> para o seu imóvel rural no Pará.
+          CAR, georreferenciamento e <span className="text-gradient">regularização fundiária</span> no Pará.
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-concrete-fg/75 animate-fade-in [animation-delay:240ms]">
-          Soluções técnicas completas em CAR, georreferenciamento, titulação,
-          licenciamento e geoprocessamento — conduzidas por engenheiros
-          florestais especialistas, com atuação em todo o estado.
+          Soluções técnicas completas em CAR, georreferenciamento (SIGEF/INCRA),
+          titulação no ITERPA, licenciamento ambiental (SEMAS-PA) e
+          geoprocessamento — engenharia florestal especializada, com sede em
+          Rurópolis-PA e atuação em todo o estado.
         </p>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3 animate-fade-in [animation-delay:360ms]">
