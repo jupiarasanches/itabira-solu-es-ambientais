@@ -1,4 +1,4 @@
-import { ArrowUpRight, Compass, FileCheck, Leaf, Map } from "lucide-react";
+import { Compass, FileCheck, Leaf, Map, Sprout, ArrowRight } from "lucide-react";
 import georef from "@/assets/service-georef.jpg";
 import titulacao from "@/assets/service-titulacao.jpg";
 import licenciamento from "@/assets/service-licenciamento.jpg";
@@ -6,92 +6,131 @@ import geo from "@/assets/service-geo.jpg";
 
 const services = [
   {
-    icon: Compass,
-    title: "CAR + Georreferenciamento",
-    desc: "Cadastro Ambiental Rural completo e georreferenciamento de imóveis rurais conforme normas do SIGEF/INCRA.",
-    items: ["Inscrição e retificação de CAR", "Levantamento topográfico (GNSS)", "Memorial descritivo certificado", "Análise de sobreposições"],
+    icon: Sprout,
+    eyebrow: "Cadastro Ambiental Rural",
+    title: "CAR e SICAR",
+    desc: "Realizamos o cadastro e manutenção do CAR junto ao SICAR, incluindo delimitação de Áreas de Preservação Permanente (APPs), Reserva Legal e uso consolidado, garantindo conformidade com o Código Florestal.",
     image: georef,
-  },
-  {
-    icon: FileCheck,
-    title: "Titulação + Regularização Fundiária",
-    desc: "Titulação de posses junto ao ITERPA, INCRA e SPU. Regularização fundiária urbana e rural.",
-    items: ["Processos junto ao ITERPA", "Regularização no Terra Legal", "Usucapião extrajudicial", "Desmembramento e remembramento"],
-    image: titulacao,
+    featured: true,
   },
   {
     icon: Leaf,
-    title: "Licenciamento Ambiental + PRA",
-    desc: "Licenças ambientais junto à SEMAS-PA e adesão ao Programa de Regularização Ambiental (PRA).",
-    items: ["LP, LI e LO", "PRADA — recuperação de APP/RL", "Outorga de uso da água", "Termo de Compromisso (PRA)"],
+    eyebrow: "LP, LI e LO",
+    title: "Licenciamento Ambiental",
     image: licenciamento,
   },
   {
     icon: Map,
-    title: "Geoprocessamento, Laudos e DAP/CAF",
-    desc: "Mapas temáticos, laudos técnicos, perícias e emissão de DAP/CAF para acesso a políticas públicas.",
-    items: ["Mapas temáticos e shapefiles", "Laudos técnicos e perícias", "Emissão de CAF (antiga DAP)", "Apoio ao Pronaf e crédito rural"],
+    eyebrow: "Certificação INCRA",
+    title: "Georreferenciamento",
     image: geo,
+  },
+  {
+    icon: FileCheck,
+    eyebrow: "Titulação e Registro",
+    title: "Regularização Fundiária",
+    image: titulacao,
+  },
+  {
+    icon: Compass,
+    eyebrow: "PRAD e Reflorestamento",
+    title: "Recuperação de APP",
+    image: georef,
   },
 ];
 
 export function Services() {
   return (
-    <section id="servicos" className="relative bg-concrete text-concrete-fg py-24 lg:py-32 overflow-hidden">
-      <div className="absolute inset-0 concrete-grain opacity-30" />
-      <div className="absolute -top-32 -right-32 size-96 rounded-full bg-primary/20 blur-3xl" />
-      <div className="absolute -bottom-32 -left-32 size-96 rounded-full bg-accent/10 blur-3xl" />
-
-      <div className="container relative">
-        <div className="max-w-2xl">
-          <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-            O que fazemos
-          </span>
-          <h2 className="mt-3 font-display text-4xl lg:text-5xl font-bold">
-            Serviços técnicos <span className="text-gradient">de ponta a ponta</span>
-          </h2>
-          <p className="mt-5 text-concrete-fg/70">
-            Atuamos em todas as etapas da regularização rural — do levantamento
-            em campo à emissão dos documentos finais nos órgãos ambientais e
-            fundiários.
+    <section id="servicos" className="bg-background py-24 lg:py-32">
+      <div className="container">
+        {/* Header */}
+        <div className="grid lg:grid-cols-2 gap-10 items-end mb-14">
+          <div>
+            <h2 className="font-display text-4xl lg:text-6xl font-bold text-foreground leading-[1.05]">
+              Soluções Completas em{" "}
+              <span className="text-primary">Regularização</span>
+            </h2>
+          </div>
+          <p className="text-muted-foreground text-lg leading-relaxed lg:pb-2">
+            Cada serviço é conduzido por especialistas certificados, com
+            metodologias ágeis e total transparência em cada etapa do processo.
           </p>
         </div>
 
-        <div className="mt-14 grid md:grid-cols-2 gap-6">
-          {services.map(({ icon: Icon, title, desc, items, image }) => (
-            <article
-              key={title}
-              className="group relative isolate overflow-hidden rounded-2xl border border-concrete bg-concrete-muted/40 backdrop-blur p-7 lg:p-8 transition-all duration-500 hover:border-accent/50 hover:-translate-y-1 hover:shadow-elegant"
-            >
-              <img
-                src={image}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 -z-10 h-full w-full object-cover opacity-0 group-hover:opacity-30 transition-opacity duration-700"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-concrete via-concrete to-transparent opacity-100 group-hover:opacity-90 transition-opacity duration-700" />
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          {services.map((s, i) => {
+            const Icon = s.icon;
+            const isFeatured = s.featured;
 
-              <div className="flex items-start justify-between gap-4">
-                <div className="size-14 rounded-xl gradient-primary grid place-items-center shadow-glow">
-                  <Icon className="size-6 text-primary-foreground" />
+            return (
+              <article
+                key={s.title}
+                className={`group relative overflow-hidden rounded-3xl bg-card shadow-soft hover:shadow-elegant transition-all duration-500 ${
+                  isFeatured
+                    ? "sm:col-span-2 lg:col-span-2 lg:row-span-1 min-h-[520px]"
+                    : "min-h-[520px]"
+                }`}
+              >
+                {/* Background image */}
+                <img
+                  src={s.image}
+                  alt={s.title}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+                />
+
+                {/* Gradient overlay */}
+                <div
+                  className={`absolute inset-0 ${
+                    isFeatured
+                      ? "bg-gradient-to-t from-background via-background/85 to-background/10"
+                      : "bg-gradient-to-t from-foreground/95 via-foreground/50 to-foreground/10"
+                  }`}
+                />
+
+                {/* Floating icon chip */}
+                <div className="absolute top-6 left-6 z-10">
+                  <div className="size-12 rounded-2xl bg-primary/90 backdrop-blur-sm grid place-items-center shadow-glow ring-1 ring-primary-foreground/20">
+                    <Icon className="size-5 text-primary-foreground" />
+                  </div>
                 </div>
-                <ArrowUpRight className="size-5 text-concrete-fg/50 group-hover:text-accent group-hover:rotate-12 transition-all" />
-              </div>
 
-              <h3 className="mt-6 font-display text-2xl font-semibold">{title}</h3>
-              <p className="mt-2 text-concrete-fg/70 text-sm leading-relaxed">{desc}</p>
+                {/* Bottom content */}
+                <div className="absolute inset-x-0 bottom-0 p-6 lg:p-7 z-10">
+                  <div
+                    className={`text-[11px] font-semibold uppercase tracking-[0.18em] mb-2 ${
+                      isFeatured ? "text-primary" : "text-primary-foreground/85"
+                    }`}
+                  >
+                    {s.eyebrow}
+                  </div>
+                  <h3
+                    className={`font-display text-2xl lg:text-3xl font-bold leading-tight ${
+                      isFeatured ? "text-foreground" : "text-primary-foreground"
+                    }`}
+                  >
+                    {s.title}
+                  </h3>
 
-              <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
-                {items.map((it) => (
-                  <li key={it} className="flex items-start gap-2 text-sm text-concrete-fg/85">
-                    <span className="mt-1.5 size-1.5 rounded-full bg-accent shrink-0" />
-                    {it}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+                  {isFeatured && s.desc && (
+                    <>
+                      <p className="mt-4 text-muted-foreground text-sm leading-relaxed max-w-md">
+                        {s.desc}
+                      </p>
+                      <a
+                        href="#contato"
+                        className="mt-5 inline-flex items-center gap-2 text-primary font-semibold text-sm group/link"
+                      >
+                        Saiba mais
+                        <ArrowRight className="size-4 transition-transform group-hover/link:translate-x-1" />
+                      </a>
+                    </>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
