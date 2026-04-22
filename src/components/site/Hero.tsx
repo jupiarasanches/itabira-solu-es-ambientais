@@ -1,4 +1,4 @@
-import { ArrowRight, Eye, Leaf } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import hero from "@/assets/hero-amazon.jpg";
 
