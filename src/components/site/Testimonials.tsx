@@ -213,7 +213,7 @@ export function Testimonials() {
                       </div>
                     </article>
                   ) : (
-                    <article className="group h-full rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                    <article className="group h-full rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-500 flex flex-col will-change-transform">
                       <div className="flex items-center gap-3">
                         <Avatar src={t.avatar} alt={t.name} eager={i < 3} />
                         <div>
