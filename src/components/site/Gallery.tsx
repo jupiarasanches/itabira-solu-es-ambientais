@@ -68,11 +68,11 @@ export function Gallery() {
         </div>
 
         <div className="overflow-hidden -mx-6 px-6" ref={emblaRef}>
-          <div className="flex gap-6">
+          <div className="flex gap-6 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] will-change-transform">
             {slides.map((s, i) => (
               <div
                 key={i}
-                className="relative shrink-0 basis-[85%] sm:basis-[55%] lg:basis-[38%] aspect-[4/5] rounded-2xl overflow-hidden group shadow-soft"
+                className="relative shrink-0 basis-[85%] sm:basis-[55%] lg:basis-[38%] aspect-[4/5] rounded-2xl overflow-hidden group shadow-soft transition-all duration-500 hover:shadow-elegant hover:-translate-y-1"
               >
                 <img
                   src={s.src}
@@ -81,10 +81,10 @@ export function Gallery() {
                   decoding="async"
                   width={800}
                   height={1000}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110 will-change-transform"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-concrete via-concrete/40 to-transparent opacity-90" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-concrete-fg">
+                <div className="absolute inset-0 bg-gradient-to-t from-concrete via-concrete/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-concrete-fg translate-y-1 group-hover:translate-y-0 transition-transform duration-500">
                   <div className="text-xs uppercase tracking-wider text-accent font-semibold">
                     {s.caption}
                   </div>
