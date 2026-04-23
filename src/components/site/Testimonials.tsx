@@ -102,10 +102,16 @@ function Avatar({ src, alt, eager }: { src: string; alt: string; eager?: boolean
 
 export function Testimonials() {
   const autoplay = useRef(
-    Autoplay({ delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true }),
+    Autoplay({ delay: 4200, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "start", dragFree: false, containScroll: "trimSnaps" },
+    {
+      loop: true,
+      align: "start",
+      dragFree: true,
+      duration: 26,
+      containScroll: "trimSnaps",
+    },
     [autoplay.current],
   );
   const [selected, setSelected] = useState(0);
