@@ -102,10 +102,16 @@ function Avatar({ src, alt, eager }: { src: string; alt: string; eager?: boolean
 
 export function Testimonials() {
   const autoplay = useRef(
-    Autoplay({ delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true }),
+    Autoplay({ delay: 4200, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "start", dragFree: false, containScroll: "trimSnaps" },
+    {
+      loop: true,
+      align: "start",
+      dragFree: true,
+      duration: 26,
+      containScroll: "trimSnaps",
+    },
     [autoplay.current],
   );
   const [selected, setSelected] = useState(0);
@@ -171,14 +177,14 @@ export function Testimonials() {
           </div>
 
           <div className="overflow-hidden -mx-4 px-4" ref={emblaRef}>
-            <div className="flex gap-6 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]">
+            <div className="flex gap-6 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] will-change-transform">
               {testimonials.map((t, i) => (
                 <div
                   key={`${t.name}-${i}`}
-                  className="shrink-0 grow-0 basis-full sm:basis-[calc(50%-0.75rem)] lg:basis-[calc(33.333%-1rem)]"
+                  className="shrink-0 grow-0 basis-full sm:basis-[calc(50%-0.75rem)] lg:basis-[calc(33.333%-1rem)] transition-transform duration-500"
                 >
                   {t.variant === "image" ? (
-                    <article className="group relative h-full overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant transition-shadow">
+                    <article className="group relative h-full overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-500">
                       <img
                         src={t.bg!}
                         alt=""
@@ -207,7 +213,7 @@ export function Testimonials() {
                       </div>
                     </article>
                   ) : (
-                    <article className="group h-full rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                    <article className="group h-full rounded-2xl bg-secondary p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-500 flex flex-col will-change-transform">
                       <div className="flex items-center gap-3">
                         <Avatar src={t.avatar} alt={t.name} eager={i < 3} />
                         <div>
