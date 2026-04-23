@@ -21,8 +21,19 @@ const slides = [
 ];
 
 export function Gallery() {
-  const autoplay = useRef(Autoplay({ delay: 4500, stopOnInteraction: false }));
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" }, [autoplay.current]);
+  const autoplay = useRef(
+    Autoplay({ delay: 3800, stopOnInteraction: false, stopOnMouseEnter: true }),
+  );
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+      dragFree: true,
+      duration: 28,
+      containScroll: "trimSnaps",
+    },
+    [autoplay.current],
+  );
 
   return (
     <section className="bg-secondary/40 py-24 lg:py-32">
