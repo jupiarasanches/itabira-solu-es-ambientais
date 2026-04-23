@@ -185,12 +185,6 @@ export function Testimonials() {
                 >
                   {t.variant === "image" ? (
                     <article className="group relative h-full overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-500">
-                <div
-                  key={`${t.name}-${i}`}
-                  className="shrink-0 grow-0 basis-full sm:basis-[calc(50%-0.75rem)] lg:basis-[calc(33.333%-1rem)]"
-                >
-                  {t.variant === "image" ? (
-                    <article className="group relative h-full overflow-hidden rounded-2xl min-h-[340px] shadow-soft hover:shadow-elegant transition-shadow">
                       <img
                         src={t.bg!}
                         alt=""
